@@ -1,20 +1,21 @@
 import Search from '@/app/components/Search'
 import NewsList from '@/app/components/NewsList'
-import Navbar from '@/app/components/Navbar';
+import Navbar from '@/app/components/Navbar/Navigation';
+import ImageSlider from './components/ImageSlider';
+import { news } from '@/types';
+import axios from 'axios';
 
 
-export default async function Home() {
 
-  const response = await fetch (`https://api-berita-indonesia.vercel.app/cnn/terbaru/`)
-  const news = await response.json()
-
+const Home = () => {
   return (
     <div>
-      
-      {/* {news.data.map((data) =>{
-        console.log(data.title)
-      })} */}
+      <ImageSlider/>
+
       <NewsList/>
     </div>
   );
 }
+
+export default Home
+

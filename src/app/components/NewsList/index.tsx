@@ -1,20 +1,27 @@
-import Image from "next/image";
+'use client'
+
+import axios from "axios";
+
+import { useEffect, useState } from "react";
 
 export default function NewsList() {
+    const [newsList, setNewsList] = useState([]);
+    useEffect(() => {
+        const fetchData = async() => {
+            const response = await axios.get (`https://api-berita-indonesia.vercel.app/cnn/terbaru/`)
+            setNewsList(response.data.data.posts)
+        }
+        fetchData()
+    },[])
+
     return (
-        <div className="grid grid-cols-3 gap-4 h-32">
-            <div className="bg-slate-600">
-                <Image src="https://placehold.co/600x400/png" alt="..." width={300} height={200}/>
-                <h3>News Tittle</h3>
+        <div className="grid grid-cols-4 gap-4">
+            {newsList && newsList.map((data: any)=>(
+                <div className="bg-slate-200">
+                <img src={`${data.thumbnail}`} alt="..."/>
+                <h3>{data.title}</h3>
             </div>
-            <div className="bg-slate-600">
-                <Image src="https://placehold.co/600x400/png" alt="..." width={300} height={200}/>
-                <h3>News Tittle</h3>
-            </div>
-            <div className="bg-slate-600">
-                <Image src="https://placehold.co/600x400/png" alt="..." width={300} height={200}/>
-                <h3>News Tittle</h3>
-            </div>
+            ))}
         </div>
     )
 }
