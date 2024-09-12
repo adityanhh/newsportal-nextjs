@@ -1,11 +1,13 @@
-'use client'
+'use client';
 
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { ImageSliderSkeleton } from "@/app/SkeletonLoader"; // Import the skeleton loader
 
 export default function ImageSlider() {
     const [slides, setSlides] = useState<{thumbnail: string, title: string}[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [loading, setLoading] = useState(true); // Add loading state
     const fallbackSlides = [
         {thumbnail: "https://source.unsplash.com/random/800x600?nature1", title: "Random Image 1"},
         {thumbnail: "https://source.unsplash.com/random/800x600?nature2", title: "Random Image 2"},
@@ -22,9 +24,11 @@ export default function ImageSlider() {
                     title: post.title
                 }));
                 setSlides(newsSlides);
+                setLoading(false); // Set loading to false when data is loaded
             } catch (error) {
                 console.error('Error fetching images and titles from API:', error);
                 setSlides(fallbackSlides); // Use fallback slides if API fails
+                setLoading(false); // Set loading to false even if there's an error
             }
         };
         fetchSlides();
@@ -37,6 +41,10 @@ export default function ImageSlider() {
 
         return () => clearInterval(interval);
     }, [slides.length]);
+
+    if (loading) {
+        return <ImageSliderSkeleton />; // Return skeleton loader when loading
+    }
 
     return (
         <div className="relative w-full max-w-4xl mx-auto mt-10 overflow-hidden rounded-lg shadow-lg">

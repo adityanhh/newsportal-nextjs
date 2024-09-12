@@ -1,22 +1,31 @@
-import Search from '@/app/components/Search';
 import NewsList from '@/app/components/NewsList';
-import Navbar from '@/app/components/Navbar/Navigation';
 import ImageSlider from '@/app/components/ImageSlider';
-import Ads from '@/app/components/Ads'; // Import Ads component
+import Ads from '@/app/components/Ads';
+import RandomNews from './components/RandomNews';
 
 const Home = () => {
   return (
-    <div>
+    <div className="relative">
+      {/* ImageSlider */}
       <div>
         <ImageSlider />
       </div>
 
-      <div className="flex space-x-4 p-4">
-        <div className="flex-1">
-          <NewsList />
+      {/* Main content */}
+      <div className="flex flex-col sm:flex-row p-4">
+        <div className="flex-1 sm:mr-4">
+          <RandomNews />
+          <NewsList/>
         </div>
 
-        <div className="flex-none">
+        <div className="hidden sm:flex sm:flex-none">
+          <Ads />
+        </div>
+      </div>
+
+      {/* Ads component on mobile */}
+      <div className="fixed top-0 left-0 w-full sm:hidden z-50">
+        <div className="relative w-full">
           <Ads />
         </div>
       </div>
