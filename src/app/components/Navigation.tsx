@@ -5,7 +5,7 @@ import Search from '@/app/components/Search';  // Import Search component
 
 export default function Navigation() {
     return (
-        <nav className="bg-gray-900 p-4 shadow-lg sticky top-0 z-50">
+        <nav className="bg-background2 p-4 shadow-lg sticky top-0 z-50">
             <div className="container mx-auto flex items-center justify-between">
                 {/* Logo/Title on the Left */}
                 <div className="text-white text-2xl font-bold cursor-pointer hover:text-blue-400 transition duration-300">

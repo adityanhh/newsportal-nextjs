@@ -2,11 +2,13 @@ import NewsList from '@/app/components/NewsList';
 import ImageSlider from '@/app/components/ImageSlider';
 import Ads from '@/app/components/Ads';
 import RandomNews from './components/RandomNews';
+import Navigation from './components/Navigation';
 
 const Home = () => {
   return (
-    <div className="relative">
+    <div className="relative bg-background">
       {/* ImageSlider */}
+      <Navigation/>
       <div>
         <ImageSlider />
       </div>
@@ -24,7 +26,7 @@ const Home = () => {
       </div>
 
       {/* Ads component on mobile */}
-      <div className="fixed top-0 left-0 w-full sm:hidden z-50">
+      <div className="fixed bottom-0 left-0 w-full sm:hidden z-50">
         <div className="relative w-full">
           <Ads />
         </div>

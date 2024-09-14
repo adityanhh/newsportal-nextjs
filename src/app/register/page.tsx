@@ -1,30 +1,34 @@
-
 'use client'
 
-import React, { useState } from 'react';
-import axios from 'axios';
+import { useState } from 'react';
 import Link from 'next/link';
 
-const Login: React.FC = () => {
+const SignUp: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle login logic
+        // Handle sign-up logic here
+        if (password !== confirmPassword) {
+            setError('Passwords do not match');
+            return;
+        }
         console.log('Email:', email);
         console.log('Password:', password);
+        // Perform sign-up logic, e.g., call an API
     };
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-indigo-600">
             <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-xl shadow-lg transform transition-all hover:shadow-2xl duration-500">
                 <h2 className="text-3xl font-extrabold text-center text-gray-900">
-                    Log In
+                    Sign Up
                 </h2>
                 <p className="text-sm text-center text-gray-600">
-                    Please sign in to your account
+                    Create a new account
                 </p>
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
@@ -61,51 +65,40 @@ const Login: React.FC = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center">
-                            <input
-                                id="remember-me"
-                                name="remember-me"
-                                type="checkbox"
-                                className="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500"
-                            />
-                            <label
-                                htmlFor="remember-me"
-                                className="ml-2 text-sm text-gray-600"
-                            >
-                                Remember me
-                            </label>
-                        </div>
-                        <div className="text-sm">
-                            <a
-                                href="#"
-                                className="font-medium text-indigo-600 hover:text-indigo-500"
-                            >
-                                Forgot your password?
-                            </a>
-                        </div>
+                    <div>
+                        <label
+                            htmlFor="confirm-password"
+                            className="block text-sm font-medium text-gray-700"
+                        >
+                            Confirm Password
+                        </label>
+                        <input
+                            id="confirm-password"
+                            name="confirm-password"
+                            type="password"
+                            required
+                            className="w-full p-3 mt-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-colors"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                        />
                     </div>
+                    {error && <p className="text-red-500 text-center">{error}</p>}
                     <button
                         type="submit"
                         className="w-full py-3 mt-4 font-bold text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors"
                     >
-                        Sign in
+                        Sign up
                     </button>
-                    <div className="flex flex-col space-y-4">
-                    <Link href="/api/auth/signin" className="text-sm text-gray-600 hover:text-gray-500">
-                        Sign in with GitHub
-                    </Link>
-                </div>
                 </form>
                 <div className="mt-6 text-center">
                     <p className="text-sm text-gray-600">
-                        Don't have an account?{' '}
-                        <a
-                            href="/register"
+                        Already have an account?{' '}
+                        <Link
+                            href="/login"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
                         >
-                            Sign up
-                        </a>
+                            Log in
+                        </Link>
                     </p>
                 </div>
             </div>
@@ -113,4 +106,4 @@ const Login: React.FC = () => {
     );
 };
 
-export default Login;
+export default SignUp;

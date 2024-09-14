@@ -48,7 +48,7 @@ export default function RandomNews() {
                 {newsList.map((news) => (
                     <div 
                         key={news.title} 
-                        className="bg-white shadow-sm rounded-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-md"
+                        className="bg-card shadow-sm rounded-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-md"
                     >
                         <img 
                             src={news.thumbnail} 
@@ -58,7 +58,7 @@ export default function RandomNews() {
                         />
                         <div className="p-2 sm:p-3">
                             {/* Smaller text on mobile (sm), normal on desktop (lg) */}
-                            <h3 className="text-sm sm:text-base lg:text-lg font-semibold mb-1">
+                            <h3 className="text-white text-sm sm:text-base lg:text-lg font-semibold mb-1">
                                 {news.title}
                             </h3>
                             <p className="text-xs sm:text-sm lg:text-base text-gray-600 mb-2">
