@@ -43,7 +43,7 @@ export default function ImageSlider() {
     }, [slides.length]);
 
     if (loading) {
-        return <ImageSliderSkeleton />; // Return skeleton loader when loading
+        return <ImageSliderSkeleton /> // Return skeleton loader when loading
     }
 
     return (
