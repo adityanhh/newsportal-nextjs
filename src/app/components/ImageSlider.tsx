@@ -47,7 +47,7 @@ export default function ImageSlider() {
     }
 
     return (
-        <div className="relative w-full max-w-4xl mx-auto mt-10 overflow-hidden rounded-lg shadow-lg">
+        <div className="relative w-full max-w-4xl ml-10 mt-10 overflow-hidden rounded-lg shadow-lg">
             <div
                 className="flex transition-transform duration-1000 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
