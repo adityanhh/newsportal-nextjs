@@ -3,10 +3,13 @@ import ImageSlider from '@/app/components/ImageSlider';
 import Ads from '@/app/components/Ads';
 import RandomNews from './components/RandomNews';
 import Navigation from './components/Navigation';
+import AppRouter from './AppRouter';
 
 const Home = () => {
+  
   return (
     <div className="relative bg-background">
+      <AppRouter/>
       {/* ImageSlider */}
       <Navigation/>
       <div>

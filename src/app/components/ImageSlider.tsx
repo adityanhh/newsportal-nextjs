@@ -1,13 +1,13 @@
 'use client';
 
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { ImageSliderSkeleton } from "@/app/SkeletonLoader"; // Import the skeleton loader
+import { fetchNewsSlides, Slide } from "@/app/controller/Api"; // Import fungsi API
 
 export default function ImageSlider() {
-    const [slides, setSlides] = useState<{thumbnail: string, title: string}[]>([]);
+    const [slides, setSlides] = useState<Slide[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [loading, setLoading] = useState(true); // Add loading state
+    const [loading, setLoading] = useState(true);
     const fallbackSlides = [
         {thumbnail: "https://source.unsplash.com/random/800x600?nature1", title: "Random Image 1"},
         {thumbnail: "https://source.unsplash.com/random/800x600?nature2", title: "Random Image 2"},
@@ -16,22 +16,18 @@ export default function ImageSlider() {
     ];
 
     useEffect(() => {
-        const fetchSlides = async () => {
+        const loadSlides = async () => {
             try {
-                const response = await axios.get('https://api-berita-indonesia.vercel.app/cnn/nasional/');
-                const newsSlides = response.data.data.posts.slice(0, 4).map((post: any) => ({
-                    thumbnail: post.thumbnail,
-                    title: post.title
-                }));
+                const newsSlides = await fetchNewsSlides();
                 setSlides(newsSlides);
-                setLoading(false); // Set loading to false when data is loaded
+                setLoading(false);
             } catch (error) {
-                console.error('Error fetching images and titles from API:', error);
-                setSlides(fallbackSlides); // Use fallback slides if API fails
-                setLoading(false); // Set loading to false even if there's an error
+                console.error('Error loading slides:', error);
+                setSlides(fallbackSlides);
+                setLoading(false);
             }
         };
-        fetchSlides();
+        loadSlides();
     }, []);
 
     useEffect(() => {

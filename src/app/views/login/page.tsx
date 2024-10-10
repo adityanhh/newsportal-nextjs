@@ -1,20 +1,22 @@
-
 'use client'
 
 import React, { useState } from 'react';
-import axios from 'axios';
-import Link from 'next/link';
+import { login } from '@/app/controller/User';
 
 const Login: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle login logic
-        console.log('Email:', email);
-        console.log('Password:', password);
+        try {
+            const response = await login({ email, password });
+            console.log('Login berhasil:', response.message);
+            // Tambahkan logika untuk menangani login yang berhasil, misalnya redirect ke halaman utama
+        } catch (error) {
+            setError('Email atau password salah');
+        }
     };
 
     return (
@@ -92,16 +94,14 @@ const Login: React.FC = () => {
                         Sign in
                     </button>
                     <div className="flex flex-col space-y-4">
-                    <Link href="/api/auth/signin" className="text-sm text-gray-600 hover:text-gray-500">
-                        Sign in with GitHub
-                    </Link>
+            
                 </div>
                 </form>
                 <div className="mt-6 text-center">
                     <p className="text-sm text-gray-600">
                         Don't have an account?{' '}
                         <a
-                            href="/register"
+                            href="/views/register"
                             className="font-medium text-indigo-600 hover:text-indigo-500"
                         >
                             Sign up
