@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { Roboto } from "next/font/google"
 import "./globals.css";
+import { SessionProvider } from 'next-auth/react'
+import ClientProvider from './components/ClientProvider'
 
 const roboto = Roboto({
   weight: ["400", "700"], // Weight yang diinginkan
@@ -28,14 +30,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body className={`${roboto.variable} ${roboto.variable} antialiased`}>
-        {children}
-      </body>
+      <ClientProvider>
+        <body>{children}</body>
+      </ClientProvider>
     </html>
   );
 }

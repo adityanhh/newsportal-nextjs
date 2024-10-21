@@ -1,7 +1,7 @@
 'use client'
 
-import { FaUserCircle } from 'react-icons/fa';
-import Search from '@/app/components/Search';  // Import Search component
+import Search from '@/app/components/Search';
+import NavigationClient from './NavigationClient';
 
 export default function Navigation() {
     return (
@@ -18,13 +18,7 @@ export default function Navigation() {
                     <Search />
 
                     {/* User Icon */}
-                    <div className="relative group">
-                        <FaUserCircle className="text-white text-4xl cursor-pointer hover:text-blue-400 transition duration-300" />
-                        {/* Dropdown on hover */}
-                        <div className="absolute right-0 mt-2 w-48 bg-white text-black rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <a href="/login" className="block px-4 py-2 hover:bg-blue-500 hover:text-white transition">Login</a>
-                        </div>
-                    </div>
+                    <NavigationClient />
                 </div>
             </div>
         </nav>

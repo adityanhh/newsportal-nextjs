@@ -2,23 +2,36 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 const SignUp: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle sign-up logic here
         if (password !== confirmPassword) {
-            setError('Passwords do not match');
+            setError('Password tidak cocok');
             return;
         }
-        console.log('Email:', email);
-        console.log('Password:', password);
-        // Perform sign-up logic, e.g., call an API
+        try {
+            const response = await fetch('/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            if (response.ok) {
+                router.push('/login');
+            } else {
+                const data = await response.json();
+                setError(data.message || 'Terjadi kesalahan saat registrasi');
+            }
+        } catch (error) {
+            setError('Terjadi kesalahan saat menghubungi server');
+        }
     };
 
     return (
