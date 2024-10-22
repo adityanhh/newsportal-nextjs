@@ -1,17 +1,12 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
-import githubAuth from 'next-auth/providers/github'
 import CredentialsProvider from "next-auth/providers/credentials";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
-const authOption: NextAuthOptions = {
+const authOptions: NextAuthOptions = {
     providers: [
-        githubAuth({
-            clientId: process.env.GITHUB_CLIENT || '',
-            clientSecret: process.env.GITHUB_SECRET || ''
-        }),
         CredentialsProvider({
             name: "Credentials",
             credentials: {
@@ -45,13 +40,23 @@ const authOption: NextAuthOptions = {
             }
         })
     ],
-    secret: process.env.NEXTAUTH_SECRET || '',
-    pages: {
-        signIn: '/login',
-        signOut: '/',
+    callbacks: {
+        async jwt({ token, user }) {
+            if (user) {
+                token.id = user.id;
+            }
+            return token;
+        },
+        async session({ session, token }) {
+            if (session.user) {
+                session.user.id = token.id as string;
+            }
+            return session;
+        },
     },
+    // ... konfigurasi lainnya
 }
 
-const handler = NextAuth(authOption)
+const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST }
+export { handler as GET, handler as POST };
