@@ -44,6 +44,12 @@ export default function ProfileEdit({ user }: ProfileEditProps) {
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+    
+            if (!file.type.startsWith("image/")) {
+                alert("Silakan pilih file gambar yang valid.");
+                return;
+            }
+    
             setProfileImage(file);
             setPreviewImage(URL.createObjectURL(file));
         }

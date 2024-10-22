@@ -15,7 +15,7 @@ export default function NavigationClient() {
         router.push('/');
     };
 
-    console.log(session)
+    console.log(session?.user?.profileImage)
 
     return (
         <div className="relative group">
