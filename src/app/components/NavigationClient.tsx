@@ -5,31 +5,17 @@ import { Session } from 'next-auth';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { FaUserCircle } from 'react-icons/fa';
-import { useState } from 'react';
-import { PrismaClient } from '@prisma/client';
 
 export default function NavigationClient() {
     const { data: session } = useSession() as { data: Session | null };
     const router = useRouter();
-    const [user, setUser] = useState({} as User);
-
-    const prisma = new PrismaClient();
 
     const handleLogout = async () => {
         await signOut({ redirect: false });
         router.push('/');
     };
 
-    const fetchUser = async() => {
-        const res = await prisma.user.findUnique({
-            where: {
-                email: session?.user?.email
-            }
-        })
-        setUser(res);
-    }
-
-    console.log(user);
+    console.log(session)
 
     return (
         <div className="relative group">
