@@ -6,44 +6,40 @@ import path from 'path';
 
 const prisma = new PrismaClient();
 
-export async function PUT(request: Request) {
+export async function PUT(req: Request) {
     const session = await getServerSession();
 
     if (!session || !session.user) {
-        return NextResponse.json({ message: "Tidak terautentikasi" }, { status: 401 });
+        return NextResponse.json({ error: 'Tidak terautentikasi' }, { status: 401 });
+    }
+
+    const formData = await req.formData();
+    const name = formData.get('name') as string;
+    const file = formData.get('profileImage') as File | null;
+
+    let profileImagePath = null;
+
+    if (file) {
+        const buffer = Buffer.from(await file.arrayBuffer());
+        const filename = Date.now() + '_' + file.name.replaceAll(' ', '_');
+        const filepath = path.join(process.cwd(), 'public/uploads', filename);
+
+        await writeFile(filepath, buffer);
+        profileImagePath = `/uploads/${filename}`;
     }
 
     try {
-        const formData = await request.formData();
-        const name = formData.get('name') as string;
-        const profileImage = formData.get('profileImage') as File | null;
-
-        let profileImageUrl = undefined;
-
-        if (profileImage) {
-            const bytes = await profileImage.arrayBuffer();
-            const buffer = Buffer.from(bytes);
-
-            const filename = `${session.user.email}-${Date.now()}${path.extname(profileImage.name)}`;
-            const filepath = path.join(process.cwd(), 'public', 'uploads', filename);
-            await writeFile(filepath, buffer);
-            profileImageUrl = `/uploads/${filename}`;
-        }
-
         const updatedUser = await prisma.user.update({
             where: { email: session.user.email! },
             data: { 
-                name,
-                ...(profileImageUrl && { profileImage: profileImageUrl }),
+                name: name,
+                ...(profileImagePath && { profileImage: profileImagePath }),
             },
         });
 
-        return NextResponse.json({ message: "Profil berhasil diperbarui", user: updatedUser }, { status: 200 });
+        return NextResponse.json({ message: 'Profil berhasil diperbarui', user: updatedUser });
     } catch (error) {
-        console.error("Error updating profile:", error);
-        return NextResponse.json({ message: "Terjadi kesalahan saat memperbarui profil" }, { status: 500 });
-    } finally {
-        await prisma.$disconnect();
+        console.error('Gagal memperbarui profil:', error);
+        return NextResponse.json({ error: 'Gagal memperbarui profil' }, { status: 500 });
     }
 }
-
